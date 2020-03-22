@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}我的题目_毕业设计系统{% endblock title %}
+
+
+{% block body %}
+    {% for row in result %}
+        <ul>
+            <li><i class="menu-icon fa fa-line-chart"></i>{{ row.topic_id }}</li>
+        </ul>
+    {% endfor %}
+{% endblock body %}
+
+
