@@ -16,6 +16,7 @@ class RegisterView(View):
         return render(request, 'register.html')
 
     def post(self, request):
+        name = request.POST.get('registerName', None)
         username = request.POST.get('registerUsername', None)
         password = request.POST.get('registerPassword', None)
         school = request.POST.get('registerSchool', None)
@@ -23,7 +24,7 @@ class RegisterView(View):
         email = request.POST.get('registerEmail', None)
 
         # email = request.POST.get('registerEmail', None)
-
+        print(name)
         print(username)
         print(password)
         print(school)
@@ -34,6 +35,7 @@ class RegisterView(View):
             print("数据不完整")
 
         user = User.objects.create_user(
+            name=name,
             username=username,
             password=password,
             school=school,
@@ -63,7 +65,7 @@ class LoginView(View):
 
         if user is not None:
             login(request, user)
-            next_url = request.GET.get('next', reverse('topic:show_my_topic'))
+            next_url = request.GET.get('next', reverse('topic:show_all_topic'))
             response = redirect(next_url)
             return response
         else:

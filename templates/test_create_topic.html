@@ -11,8 +11,59 @@
 {% endblock topfiles %}
 
 {% block body %}
+    <!--
     <div id="test-editormd">
         <textarea name="content" style="display:none;"></textarea>
+    </div>
+    -->
+
+    <div>
+        <form action="/topic/create/" method="post">
+            <!--            <label for="your_name">Your name: </label>
+            <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
+-->
+            <label for="title">题目</label>
+            <input id="title" type="text" name="title" value="{{ title }}">
+
+            <label for="detail">描述</label>
+            <input id="detail" type="text" name="detail" value="{{ detail }}">
+
+
+            <label for="limit_num">限选人数</label>
+            <select id="limit_num" name="limit_num">
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+            </select>
+
+            <input type="hidden" name="topic_id" value="">
+{#            <label for="release_time">创建时间</label>#}
+{#            <input id="release_time" name="release_time" type="datetime-local" value="{{ release_time }}">#}
+
+
+            <!--
+
+
+            <label for="release_time">创建时间</label>
+            <input id="release_time" name="release_time" type="text" value="{{ release_time }}">
+
+            <label for="status">题目被选择状态</label>
+            <select id="status" name="status">
+                <option value="{{ status }}">未选</option>
+                <option value="{{ status }}">已选</option>
+            </select>
+
+            <label for="accept">题目确认状态</label>
+            <select id="accept" name="accept">
+                <option value="{{ accept }}">等待命题老师和教学秘书确认中</option>
+                <option value="{{ accept }}">命题教师已确认选题，等待教秘确认</option>
+                <option value="{{ accept }}">选题通过</option>
+            </select>
+
+-->
+            <input type="submit" value="OK">
+        </form>
+
     </div>
 {% endblock body %}
 

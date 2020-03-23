@@ -25,7 +25,8 @@ class TopicRecord(models.Model):
     detail = models.TextField('描述')
     chosen_num = models.SmallIntegerField(verbose_name="已选人数", default=0)
     limit_num = models.SmallIntegerField(choices=limit_num_choices, blank=False, verbose_name='限选人数')
-    release_time = models.DateTimeField("出题时间")
+    release_time = models.DateTimeField("出题时间", blank=True, null=True, auto_now=True)
+    last_edit_time = models.DateTimeField("最后编辑时间", blank=True, null=True, auto_now_add=True)
     status = models.SmallIntegerField(choices=status_choices, default=1, verbose_name='选题状态')
     accept = models.SmallIntegerField(choices=accept_choices, default=0, verbose_name='确认状态')
 

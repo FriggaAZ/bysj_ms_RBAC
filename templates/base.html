@@ -6,6 +6,7 @@
 <html class="no-js" lang="en">
 <!--<![endif]-->
 {% load static %}
+{% load permission_tags %}
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,12 +50,16 @@
         <div id="main-menu" class="main-menu collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    <a href="{% url 'topic:show_all_topic' %}" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false"><i class="menu-icon fa fa-dashboard"></i>毕业设计管理 </a>
                     <ul class="sub-menu children dropdown-menu">
                         <li><i class="fa fa-table"></i><a href="{% url 'topic:show_my_topic' %}">我的题目</a></li>
-                        <li><i class="fa fa-table"></i><a href="{% url 'topic:test_create_topic' %}">创建题目</a></li>
-                        <li><i class="fa fa-table"></i><a href="{% url 'topic:test_create_topic' %}">待确认</a></li>
+
+                        {% if user|has_role:'teacher' %}
+                        <li><i class="fa fa-table"></i><a href="{% url 'topic:create_topic' %}">创建题目</a></li>
+                        {% endif %}
+
+                        <li><i class="fa fa-table"></i><a href="{% url 'topic:create_topic' %}">待确认</a></li>
                     </ul>
                 </li>
                 <h3 class="menu-title">UI elements</h3>
@@ -290,7 +295,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Dashboard</h1>
+                        <h1>{% block header_1 %}{% endblock %}</h1>
                     </div>
                 </div>
             </div>
@@ -298,7 +303,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li class="active">Dashboard</li>
+                            <li class="active">{% block header_2 %}{% endblock %}</li>
                         </ol>
                     </div>
                 </div>
