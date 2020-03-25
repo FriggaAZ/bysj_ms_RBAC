@@ -5,31 +5,31 @@ from user.models import User
 from django.contrib.auth import authenticate, login, logout
 from rolepermissions.roles import assign_role
 
+
 # Create your views here.
 
 
 # /register/
 class RegisterView(View):
-
-    def get(self, request):
-        '''显示注册页面'''
+    @staticmethod
+    def get(request):
+        # 显示注册页面
         return render(request, 'register.html')
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         name = request.POST.get('registerName', None)
         username = request.POST.get('registerUsername', None)
         password = request.POST.get('registerPassword', None)
         school = request.POST.get('registerSchool', None)
         department = request.POST.get('registerDepartment', None)
         email = request.POST.get('registerEmail', None)
-
-        # email = request.POST.get('registerEmail', None)
-        print(name)
-        print(username)
-        print(password)
-        print(school)
-        print(department)
-        print(email)
+        # print(name)
+        # print(username)
+        # print(password)
+        # print(school)
+        # print(department)
+        # print(email)
 
         if not all([username, password]):
             print("数据不完整")
@@ -50,11 +50,12 @@ class RegisterView(View):
 
 # /login/
 class LoginView(View):
-
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return render(request, 'login.html')
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         username = request.POST.get('userName', None)
         password = request.POST.get('passWord', None)
         print(username)

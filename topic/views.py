@@ -8,11 +8,12 @@ from topic.forms import TopicRecordForm, Topic2UserForm
 from django.http import HttpResponse
 
 
-# Create your views here.
-
+# /topic/
+# 获取所有题目
 @login_required
 def show_all_topic(request):
     current_user = request.user
+    # 通过查询TopicRecord表返回所有题目
     result = TopicRecord.objects.all()
     try:
         role = get_user_roles(current_user)[0].get_cls_name()
@@ -26,33 +27,54 @@ def show_all_topic(request):
     return render(request, "index.html", context)
 
 
+# /topic/index/
+# 获取当前用户id的所有题目
 @login_required
 def show_index(request):
+    # 通过session获取当前登录用户对象
     current_user = request.user
+    # 获取用户id
     current_user_id = current_user.id
     print(current_user.username)
-    result = Topic2User.objects.filter(user_id=current_user_id)
+    # 通过用户id查询Topic2User表，获取到当前用户的所有题目
+    result_list = Topic2User.objects.filter(user_id=current_user_id)
+
+    topic_list = list()
+    for topic in result_list:
+        topic_obj = TopicRecord.objects.get(id=topic.topic_id_id)
+        topic_list.append(topic_obj)
+
+    for i in topic_list:
+        print(i.title)
+        print(i.chosen_num)
 
     try:
+        # 获取用户角色
         role = get_user_roles(current_user)[0].get_cls_name()
     except IndexError:
         role = ''
+
+    # 创建context字典，返回结果
     context = {
-        'result': result,
+        'result': topic_list,
         'name': current_user.name,
         'role': role
     }
     return render(request, "test_show_index.html", context)
 
 
+# /topic/create/
+# 创建题目（role==teacher）
 @login_required
 def test_create_topic(request):
+    # 获取当前用户对象
     current_user = request.user
     try:
+        # 获取用户对应角色
         role = get_user_roles(current_user)[0].get_cls_name()
     except IndexError:
         role = ''
-
+    # 获得form，并写入数据库
     if request.method == 'POST':
         form = TopicRecordForm(request.POST)
         if form.is_valid():
@@ -73,22 +95,25 @@ def test_create_topic(request):
     return render(request, "test_create_topic.html", context)
 
 
+# /topic/show-(\d+)
+# 查看题目详情
 @login_required
 def topic_detail(request, topic_id):
     if request.method == 'GET':
-        obj = TopicRecord.objects.get(id=topic_id, status=1)
-        if not obj:
-            return HttpResponse('已被学生选择或确认完成的题目无法被编辑')
+        # 获取当前topic_id对应的题目对象
+        obj = TopicRecord.objects.get(id=topic_id)
+        # if not obj:
+        #     return HttpResponse('已被学生选择或教秘确认完成的题目无法被编辑')
 
         teacher_id = Topic2User.objects.filter(topic_id=topic_id)
         print(teacher_id)
         title = obj.title
+        # 通过Topic2User表获取teacher_id
         teacher = Topic2User.objects.get(topic_id=topic_id)
         teacher = teacher.user_id
+        # 通过teacher_id获取教师姓名
         teacher = User.objects.get(username=teacher)
         teacher = teacher.name
-        print("教师id：", teacher)
-
         chosen_num = obj.chosen_num
         limit_num = obj.limit_num
         release_time = obj.release_time
@@ -104,3 +129,11 @@ def topic_detail(request, topic_id):
             "detail": detail
         }
         return render(request, "topic_detail.html", context)
+
+
+# /topic/delete-(\d+)
+# 查看题目详情
+@login_required
+def delete_topic(request, topic_id):
+    TopicRecord.objects.get(id=topic_id).delete()
+    return render(request, "test_show_index.html")

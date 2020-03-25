@@ -3,19 +3,11 @@
 {% block title %}创建题目_毕业设计系统{% endblock title %}
 {% block topfiles %}
     <script src="/static/vendors/jquery/dist/jquery.min.js"></script>
-    <!-- 我这里用了django的模版语法，大家配置的时候按照自己的路径来就可以了 -->
-    <!-- 导入css -->
     <link rel="stylesheet" href="/static/plugins/editor.md-master/css/editormd.css"/>
-    <!-- 导入js -->
     <script src="/static/plugins/editor.md-master/editormd.js"></script>
 {% endblock topfiles %}
-
 {% block body %}
-    <!--
-    <div id="test-editormd">
-        <textarea name="content" style="display:none;"></textarea>
-    </div>
-    -->
+
 
     <div>
         <form action="/topic/create/" method="post">
@@ -37,9 +29,6 @@
             </select>
 
             <input type="hidden" name="topic_id" value="">
-{#            <label for="release_time">创建时间</label>#}
-{#            <input id="release_time" name="release_time" type="datetime-local" value="{{ release_time }}">#}
-
 
             <!--
 
@@ -64,6 +53,10 @@
             <input type="submit" value="OK">
         </form>
 
+    </div>
+
+    <div id="test-editormd">
+        <textarea name="content" style="display:none;"></textarea>
     </div>
 {% endblock body %}
 

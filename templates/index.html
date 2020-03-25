@@ -4,45 +4,32 @@
 
 
 {% block body %}
-    {#    {% for row in result %}#}
-    {#        <ul>#}
-    {#            <li><i class="menu-icon fa fa-line-chart"></i>{{ row.topic_id }}</li> <button type="button" class="btn btn-primary">Primary</button>#}
-    {#        </ul>#}
-    {#    {% endfor %}#}
-    {#    #}
 
     <div class="card-body">
         <table class="table">
             <thead class="thead-dark">
-
-
             <tr>
                 <th scope="col">id</th>
-                <th scope="col"">题目名称</th>
-                {#                <th scope="col">命题老师</th>#}
+                <th scope="col">题目名称</th>
                 <th scope="col">限选人数</th>
                 <th scope="col">操作</th>
-
-
             </tr>
-
             </thead>
             <tbody>
             {% for row in result %}
-
                 <tr>
-                    <th scope="row" >{{ row.id }}</th>
+                    <th scope="row">{{ row.id }}</th>
                     <td>{{ row.title }}</td>
-                    {#                    <td>{{ teacher }}</td>#}
-
                     <td>{{ row.limit_num }}</td>
                     <td>
-                        <button type="button" class="btn btn-primary">查看</button>
+                        <button type="button" class="btn btn-outline-info"><a href="{% url "topic:topic_detail" row.id %}">查看</a></button>
+
+                        <!--
                         <button type="button" class="btn btn-warning">编辑</button>
                         |
                         <button type="button" class="btn btn-danger">删除</button>
+                        -->
                     </td>
-
                 </tr>
             {% endfor %}
             </tbody>
