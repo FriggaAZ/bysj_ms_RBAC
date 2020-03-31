@@ -38,6 +38,17 @@ class TopicRecord(models.Model):
         return self.title
 
 
+class Annex(models.Model):
+    file = models.FileField(upload_to="./media/", blank=True, null=True)
+    detail = models.TextField('描述')
+
+
+class Annex2Topic2User(models.Model):
+    annex_id = models.ForeignKey(Annex, on_delete=models.CASCADE)
+    topic_id = models.ForeignKey(TopicRecord, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
 class Topic2User(models.Model):
     topic_id = models.ForeignKey(TopicRecord, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)

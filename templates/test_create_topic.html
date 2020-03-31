@@ -10,7 +10,7 @@
 
 
     <div>
-        <form action="/topic/create/" method="post">
+        <form action="/topic/create/" method="post" enctype="multipart/form-data">
             <!--            <label for="your_name">Your name: </label>
             <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
 -->
@@ -27,7 +27,7 @@
                 <option value=2>2</option>
                 <option value=3>3</option>
             </select>
-
+            <input type="file" id="file" name="file">
             <input type="hidden" name="topic_id" value="">
 
             <!--
@@ -54,10 +54,11 @@
         </form>
 
     </div>
-
+<!--
     <div id="test-editormd">
         <textarea name="content" style="display:none;"></textarea>
     </div>
+    -->
 {% endblock body %}
 
 {% block bottomfiles %}

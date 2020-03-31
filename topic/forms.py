@@ -36,6 +36,7 @@ class TopicRecordForm(ModelForm):
             'detail',
             # 'chosen_num',
             'limit_num',
+            'files',
             # 'release_time'
             # 'status',
             # 'accept'

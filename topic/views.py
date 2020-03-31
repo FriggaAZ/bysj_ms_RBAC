@@ -44,10 +44,6 @@ def show_index(request):
         topic_obj = TopicRecord.objects.get(id=topic.topic_id_id)
         topic_list.append(topic_obj)
 
-    for i in topic_list:
-        print(i.title)
-        print(i.chosen_num)
-
     try:
         # 获取用户角色
         role = get_user_roles(current_user)[0].get_cls_name()
@@ -77,8 +73,16 @@ def test_create_topic(request):
     # 获得form，并写入数据库
     if request.method == 'POST':
         form = TopicRecordForm(request.POST)
+        file = TopicRecordForm(request.FILES.get("file"))
         if form.is_valid():
             form.save()
+            if file is None:
+                return HttpResponse("没有上传文件")
+            else:
+                with open("media/", "wb+") as f:
+                    for chunk in file.chunks():
+                        f.write(chunk)
+                        file.save()
             title = form.clean().get("title")
             topic_id = TopicRecord.objects.get(title=title)
             user = request.user
@@ -136,4 +140,23 @@ def topic_detail(request, topic_id):
 @login_required
 def delete_topic(request, topic_id):
     TopicRecord.objects.get(id=topic_id).delete()
-    return render(request, "test_show_index.html")
+    return redirect(reverse("topic:show_my_topic"))
+
+
+# /upload
+# 上传文件
+@login_required
+def upload_file(request):
+    if request.method == 'POST':
+        print(request.user)
+        file = request.FILES.get("file")
+        if file is None:
+            return HttpResponse("没有上传文件")
+        else:
+            file.save()
+            with open("media/%s" % file.name, "wb+") as f:
+                for chunk in file.chunks():
+                    f.write(chunk)
+            return HttpResponse("Over")
+    else:
+        return render(request, "upload_file.html")

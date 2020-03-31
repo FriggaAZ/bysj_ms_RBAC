@@ -125,3 +125,7 @@ ROLEPERMISSIONS_MODULE = 'bysjms_rbac.roles'
 AUTH_USER_MODEL = 'user.User'
 
 LOGIN_URL = '/login/'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = 'media/'
