@@ -1,3 +1,4 @@
+fdfs_client
 asgiref==3.2.5
 Django==3.0.4
 django-discover-runner==1.0

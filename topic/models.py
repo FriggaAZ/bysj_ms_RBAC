@@ -1,7 +1,6 @@
 from django.db import models
 from user.models import User
 
-
 # Create your models here.
 class TopicRecord(models.Model):
     limit_num_choices = (
@@ -39,8 +38,9 @@ class TopicRecord(models.Model):
 
 
 class Annex(models.Model):
-    file = models.FileField(upload_to="./media/", blank=True, null=True)
-    detail = models.TextField('描述')
+    file = models.FileField(upload_to="fdfs", blank=True, null=True, verbose_name="附件")
+    raw_name = models.CharField(max_length=128, blank=True, null=True, verbose_name="原始文件名")
+    # detail = models.TextField('描述')
 
 
 class Annex2Topic2User(models.Model):

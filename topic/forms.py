@@ -1,4 +1,4 @@
-from topic.models import TopicRecord, Topic2User
+from topic.models import TopicRecord, Topic2User, Annex, Annex2Topic2User
 from django.forms import ModelForm
 
 
@@ -36,7 +36,7 @@ class TopicRecordForm(ModelForm):
             'detail',
             # 'chosen_num',
             'limit_num',
-            'files',
+            # 'files',
             # 'release_time'
             # 'status',
             # 'accept'
@@ -47,6 +47,25 @@ class Topic2UserForm(ModelForm):
     class Meta:
         model = Topic2User
         fields = [
+            'topic_id',
+            'user_id',
+        ]
+
+
+class AnnexForm(ModelForm):
+    class Meta:
+        model = Annex
+        fields = [
+            'file',
+            'raw_name',
+        ]
+
+
+class Annex2Topic2UserForm(ModelForm):
+    class Meta:
+        model = Annex2Topic2User
+        fields = [
+            'annex_id',
             'topic_id',
             'user_id',
         ]

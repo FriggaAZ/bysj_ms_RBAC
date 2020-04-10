@@ -4,10 +4,33 @@ from django.views import View
 from user.models import User
 from django.contrib.auth import authenticate, login, logout
 from rolepermissions.roles import assign_role
+from utils.fdfs.storage import FDFSStorage
+from django.conf import settings
+import os
 
 
 # Create your views here.
 
+#/test/
+class TestView(View):
+    @staticmethod
+    def get(request):
+        return render(request, 'test.html')
+
+    def post(self, request):
+        file = request.FILES.get("file")
+        temp_file = "%s/%s" % (settings.MEDIA_ROOT, file.name)
+        with open(temp_file, 'wb') as upload_file:
+            for chunk in file.chunks():
+                upload_file.write(chunk)
+
+        # 将文件写入临时文件
+
+        file_path = os.path.abspath(temp_file)
+        print(file_path)
+        fdfs_storage = FDFSStorage()
+        fdfs_storage.upload(file_path)
+        return render(request, 'index.html')
 
 # /register/
 class RegisterView(View):

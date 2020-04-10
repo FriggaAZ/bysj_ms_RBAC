@@ -3,9 +3,12 @@ from django.contrib.auth.decorators import login_required
 from user.models import User
 from datetime import datetime
 from rolepermissions.roles import get_user_roles
-from topic.models import TopicRecord, Topic2User
+from topic.models import TopicRecord, Topic2User, Annex, Annex2Topic2User
 from topic.forms import TopicRecordForm, Topic2UserForm
 from django.http import HttpResponse
+from utils.fdfs.storage import FDFSStorage
+from django.conf import settings
+import os
 
 
 # /topic/
@@ -73,24 +76,42 @@ def test_create_topic(request):
     # 获得form，并写入数据库
     if request.method == 'POST':
         form = TopicRecordForm(request.POST)
-        file = TopicRecordForm(request.FILES.get("file"))
+        file = request.FILES.get("file")
+        temp_file = "%s/%s" % (settings.MEDIA_ROOT, file.name)
+        with open(temp_file, 'wb') as upload_files:
+            for chunk in file.chunks():
+                upload_files.write(chunk)
+
+        # 将文件写入临时文件
+
+        file_path = os.path.abspath(temp_file)
+        print(file_path)
+        fdfs_storage = FDFSStorage()
+        remote_file_id = fdfs_storage.upload(file_path)[1]
+
+        # file = TopicRecordForm(request.FILES.get("file"))
+        # if form.is_valid():
+        #     form.save()
+        #     if file is None:
+        #         return HttpResponse("没有上传文件")
+        #     else:
+        #         with open("media/", "wb+") as f:
+        #             for chunk in file.chunks():
+        #                 f.write(chunk)
+        #                 file.save()
         if form.is_valid():
             form.save()
-            if file is None:
-                return HttpResponse("没有上传文件")
-            else:
-                with open("media/", "wb+") as f:
-                    for chunk in file.chunks():
-                        f.write(chunk)
-                        file.save()
-            title = form.clean().get("title")
-            topic_id = TopicRecord.objects.get(title=title)
-            user = request.user
-            user_id = user
+        title = form.clean().get("title")
+        topic_id = TopicRecord.objects.get(title=title)
+        user = request.user
+        user_id = user
 
-            Topic2User.objects.create(topic_id=topic_id, user_id=user_id)
+        Topic2User.objects.create(topic_id=topic_id, user_id=user_id)
+        Annex.objects.create(file=remote_file_id)
+        annex_id = Annex.objects.get(file=remote_file_id)
+        Annex2Topic2User.objects.create(annex_id=annex_id, topic_id=topic_id, user_id=user_id)
 
-            return redirect(reverse('topic:show_my_topic'))
+        return redirect(reverse('topic:show_my_topic'))
 
     context = {
         'name': current_user.name,

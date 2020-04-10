@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from user.views import RegisterView, LoginView, LogoutView
+from user.views import TestView, RegisterView, LoginView, LogoutView
 
 
 urlpatterns = [
@@ -24,6 +24,7 @@ urlpatterns = [
     path('topic/', include(('topic.urls', 'topic'), namespace='topic')),
     # path('all/', show_all_topic, name='show_all_topic'),
 
+    path('test/', TestView.as_view(), name='test'),
 
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),

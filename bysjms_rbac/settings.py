@@ -74,10 +74,21 @@ WSGI_APPLICATION = 'bysjms_rbac.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bysj_rbac',
+        'HOST': '192.168.2.164',
+        'USER': 'root',
+        'PASSWORD': 'qq990110',
+        'PORT': 3306,
     }
 }
 
@@ -129,3 +140,12 @@ LOGIN_URL = '/login/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = 'media/'
+
+# 设置Django文件存储类
+DEFAULT_FILE_STORAGE = 'utils.fdfs.storage.FDFSStorage'
+
+# 设置fdfs使用的client.conf文件路径
+FDFS_CLIENT_CONF = './utils/fdfs/client.conf'
+
+# 设置fdfs存储服务器商Nginx的IP和Port
+FDFS_URL = 'http://192.168.115.131:8888/'
